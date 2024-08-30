@@ -35,7 +35,7 @@ class Chart extends StatelessWidget {
   Widget build(context) {
     bool isDark = Theme.of(context).brightness == Brightness.dark;
     return Container(
-        height: 200,
+        height: 300,
         width: double.infinity,
         margin: Theme.of(context).cardTheme.margin,
         padding: const EdgeInsets.all(10.0),
