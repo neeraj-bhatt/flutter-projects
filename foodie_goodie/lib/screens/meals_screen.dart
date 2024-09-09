@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:foodie_goodie/models/meal.dart';
+import 'package:foodie_goodie/widgets/meals_item.dart';
 
 class MealsScreen extends StatelessWidget {
   const MealsScreen({super.key, required this.title, required this.meals});
@@ -17,8 +18,9 @@ class MealsScreen extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text("Uh oh.... Nothing here", style: Theme.of(context).textTheme.headlineLarge!.copyWith(
-                color: Theme.of(context).colorScheme.onPrimaryContainer)),
+            Text("Uh oh.... Nothing here",
+                style: Theme.of(context).textTheme.headlineLarge!.copyWith(
+                    color: Theme.of(context).colorScheme.onPrimaryContainer)),
             const SizedBox(height: 20),
             Text("Try selecting different Category",
                 style: Theme.of(context).textTheme.bodyLarge!.copyWith(
@@ -29,7 +31,7 @@ class MealsScreen extends StatelessWidget {
     } else {
       body = ListView.builder(
         itemCount: meals.length,
-        itemBuilder: (ctx, index) => Text(meals[index].title),
+        itemBuilder: (ctx, index) => MealsItem(meal: meals[index],),
       );
     }
 
