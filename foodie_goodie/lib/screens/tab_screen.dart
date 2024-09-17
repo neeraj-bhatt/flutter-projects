@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:foodie_goodie/screens/category_screen.dart';
 import 'package:foodie_goodie/screens/meals_screen.dart';
+import 'package:foodie_goodie/models/meal.dart';
 
 class TabScreen extends StatefulWidget {
   const TabScreen({super.key});
@@ -14,8 +15,21 @@ class TabScreen extends StatefulWidget {
 
 class _TabScreenState extends State<TabScreen> {
   int _selectedPageIndex = 0;
+  final List<Meal> _favouriteMeals = [];
 
-  void _selectPage(int index){
+  void _toggleFavoriteMeals(Meal meal) {
+    if (_favouriteMeals.contains(meal)) {
+      setState(() {
+        _favouriteMeals.remove(meal);
+      });
+    } else {
+      setState(() {
+        _favouriteMeals.add(meal);
+      });
+    }
+  }
+
+  void _selectPage(int index) {
     setState(() {
       _selectedPageIndex = index;
     });
@@ -23,11 +37,14 @@ class _TabScreenState extends State<TabScreen> {
 
   @override
   Widget build(BuildContext context) {
-    Widget activePage = const CategoryScreen();
+    Widget activePage = CategoryScreen(
+      onToggleFavorite: _toggleFavoriteMeals,
+    );
     var activePageTitle = "Categories";
 
-    if(_selectedPageIndex == 1){
-      activePage = const MealsScreen(meals: []);
+    if (_selectedPageIndex == 1) {
+      activePage = MealsScreen(
+          meals: _favouriteMeals, onToggleFavorite: _toggleFavoriteMeals);
       activePageTitle = "Your Favourites";
     }
 
@@ -40,8 +57,10 @@ class _TabScreenState extends State<TabScreen> {
         onTap: _selectPage,
         currentIndex: _selectedPageIndex,
         items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.category), label: "Categories"),
-          BottomNavigationBarItem(icon: Icon(Icons.favorite), label: "Favourites"),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.category), label: "Categories"),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.favorite), label: "Favourites"),
         ],
       ),
     );

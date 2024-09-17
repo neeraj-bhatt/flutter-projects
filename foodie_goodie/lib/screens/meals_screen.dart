@@ -5,14 +5,22 @@ import 'package:foodie_goodie/screens/meal_detail_screen.dart';
 import 'package:foodie_goodie/widgets/meals_item.dart';
 
 class MealsScreen extends StatelessWidget {
-  const MealsScreen({super.key, this.title, required this.meals});
+  const MealsScreen(
+      {super.key,
+      this.title,
+      required this.meals,
+      required this.onToggleFavorite});
 
   final String? title;
   final List<Meal> meals;
+  final void Function(Meal meal) onToggleFavorite;
 
   void _selectMeal(BuildContext context, Meal meal) {
     Navigator.of(context).push(MaterialPageRoute(
-      builder: (ctx) => MealDetailScreen(meal: meal),
+      builder: (ctx) => MealDetailScreen(
+        meal: meal,
+        onToggleFavorite: onToggleFavorite,
+      ),
     ));
   }
 
@@ -40,12 +48,14 @@ class MealsScreen extends StatelessWidget {
         itemCount: meals.length,
         itemBuilder: (ctx, index) => MealsItem(
           meal: meals[index],
-          onSelectMeal: (){_selectMeal(context, meals[index]);},
+          onSelectMeal: () {
+            _selectMeal(context, meals[index]);
+          },
         ),
       );
     }
 
-    if(title == null){
+    if (title == null) {
       return body;
     }
 
