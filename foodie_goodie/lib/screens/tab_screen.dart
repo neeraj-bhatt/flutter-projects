@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:foodie_goodie/screens/category_screen.dart';
 import 'package:foodie_goodie/screens/meals_screen.dart';
 import 'package:foodie_goodie/models/meal.dart';
+import 'package:foodie_goodie/widgets/drawer.dart';
 
 class TabScreen extends StatefulWidget {
   const TabScreen({super.key});
@@ -44,6 +45,14 @@ class _TabScreenState extends State<TabScreen> {
     });
   }
 
+  void _setScreen(String identifier){
+    if(identifier == "filter"){
+
+    }else{
+      Navigator.of(context).pop();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     Widget activePage = CategoryScreen(
@@ -61,6 +70,7 @@ class _TabScreenState extends State<TabScreen> {
       appBar: AppBar(
         title: Text(activePageTitle),
       ),
+      drawer: CustomDrawer(onSelectScreen: _setScreen,),
       body: activePage,
       bottomNavigationBar: BottomNavigationBar(
         onTap: _selectPage,
