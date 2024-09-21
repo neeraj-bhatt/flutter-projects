@@ -46,6 +46,7 @@ class CustomDrawer extends StatelessWidget {
             ),
           ),
           ListTile(
+            splashColor: Colors.white.withOpacity(0.5),
             leading: Icon(
               Icons.restaurant,
               size: 28,
@@ -58,9 +59,12 @@ class CustomDrawer extends StatelessWidget {
                     fontSize: 26,
                   ),
             ),
-            onTap: (){onSelectScreen("meals");},
+            onTap: () {
+              onSelectScreen("meals");
+            },
           ),
           ListTile(
+            splashColor: Colors.white.withOpacity(0.5),
             leading: Icon(
               Icons.settings,
               size: 28,
@@ -69,11 +73,13 @@ class CustomDrawer extends StatelessWidget {
             title: Text(
               "Filter",
               style: Theme.of(context).textTheme.titleSmall!.copyWith(
-                color: Theme.of(context).colorScheme.onSurface,
-                fontSize: 26,
-              ),
+                    color: Theme.of(context).colorScheme.onSurface,
+                    fontSize: 26,
+                  ),
             ),
-            onTap: () {onSelectScreen("filter");},
+            onTap: () {
+              onSelectScreen("filter");
+            },
           ),
         ],
       ),

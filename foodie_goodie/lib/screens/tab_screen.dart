@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:foodie_goodie/screens/category_screen.dart';
+import 'package:foodie_goodie/screens/filter_screen.dart';
 import 'package:foodie_goodie/screens/meals_screen.dart';
 import 'package:foodie_goodie/models/meal.dart';
 import 'package:foodie_goodie/widgets/drawer.dart';
@@ -46,10 +47,9 @@ class _TabScreenState extends State<TabScreen> {
   }
 
   void _setScreen(String identifier){
+    Navigator.of(context).pop();
     if(identifier == "filter"){
-
-    }else{
-      Navigator.of(context).pop();
+      Navigator.of(context).push(MaterialPageRoute(builder: (ctx)=> const FilterScreen()));
     }
   }
 
