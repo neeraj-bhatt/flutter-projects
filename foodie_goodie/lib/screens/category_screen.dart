@@ -7,9 +7,8 @@ import 'package:foodie_goodie/models/category.dart';
 import 'package:foodie_goodie/models/meal.dart';
 
 class CategoryScreen extends StatelessWidget {
-  const CategoryScreen({super.key, required this.onToggleFavorite, required this.selectedMeals});
+  const CategoryScreen({super.key, required this.selectedMeals});
 
-  final void Function(Meal meal) onToggleFavorite;
   final List<Meal> selectedMeals;
 
   void _selectCategory(BuildContext context, Category category) {
@@ -19,7 +18,7 @@ class CategoryScreen extends StatelessWidget {
 
     Navigator.of(context).push(MaterialPageRoute(
         builder: (ctx) =>
-            MealsScreen(title: category.title, meals: filteredMeals, onToggleFavorite: onToggleFavorite,)));
+            MealsScreen(title: category.title, meals: filteredMeals)));
   }
 
   @override

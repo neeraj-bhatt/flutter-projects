@@ -1,23 +1,37 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class FilterCustom extends StatelessWidget {
+import 'package:foodie_goodie/provider/filters_provider.dart';
+
+class FilterCustom extends ConsumerWidget {
   const FilterCustom(
       {super.key,
       required this.value,
-      required this.onChanged,
       required this.title,
       required this.subTitle});
 
   final bool value;
   final String title;
   final String subTitle;
-  final void Function(bool onChecked, String flag) onChanged;
-
+  
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return SwitchListTile(
       value: value,
-      onChanged: (onChecked){onChanged(onChecked, title);},
+      onChanged: (onChecked){
+        if(title == "Gluten-Free"){
+          ref.read(filtersProvider.notifier).setFilter(Filter.glutenFree, onChecked);
+        }
+        if(title == "Lactose-Free"){
+          ref.read(filtersProvider.notifier).setFilter(Filter.lactoseFree, onChecked);
+        }
+        if(title == "Vegetarian"){
+          ref.read(filtersProvider.notifier).setFilter(Filter.vegetarian, onChecked);
+        }
+        if(title == "Vegan"){
+          ref.read(filtersProvider.notifier).setFilter(Filter.vegan, onChecked);
+        }
+      },
       title: Text(
         title,
         style: Theme.of(context)
