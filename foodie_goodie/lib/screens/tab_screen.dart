@@ -8,12 +8,6 @@ import 'package:foodie_goodie/widgets/drawer.dart';
 import 'package:foodie_goodie/provider/favorite_provider.dart';
 import 'package:foodie_goodie/provider/filters_provider.dart';
 
-const kInitialFilters = {
-  Filter.glutenFree: false,
-  Filter.lactoseFree: false,
-  Filter.vegetarian: false,
-  Filter.vegan: false
-};
 
 class TabScreen extends ConsumerStatefulWidget {
   const TabScreen({super.key});
@@ -43,8 +37,6 @@ class _TabScreenState extends ConsumerState<TabScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final activeFilters = ref.watch(filtersProvider);
-
     final availableMeals = ref.watch(filteredMealsProvider);
 
     Widget activePage = CategoryScreen(
