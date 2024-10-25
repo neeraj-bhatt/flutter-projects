@@ -1,6 +1,6 @@
-#Android Applications using Flutter
+# Android Applications using Flutter Framework
 
-Learning Flutter and Build Some Applications using Flutter
+Learning Flutter framework and Build Some Applications using Flutter
 
 1. Expense Tracking - A Basic app where you can store your day to day expenses and see them.
 
