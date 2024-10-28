@@ -12,17 +12,14 @@ Foodie_Goodie is a simple meal browsing Android application built using the Flut
 ## Screens
 
 ### 1. Categories
-![Displays all available categories. Users can tap on any category to view category-specific meals.
-](./assets/readme_images/categories_ss.png){200}
-
+<img src="./assets/readme_images/categories_ss.png" alt="Displays all available categories." width="200" />
 
 ### 2. Meals
-![Displays meals based on the selected category. Users can tap on any meal to view its detailed description.
-](./assets/readme_images/meals_ss.png){200}
+<img src="./assets/readme_images/meals_ss.png" alt="Displays meals based on the selected category." width="200" />
 
 ### 3. Meal Description
-![Shows a detailed view of the meal, including ingredients, preparation steps, and more.
-](./assets/readme_images/mealdetail_ss.png){200}
+<img src="./assets/readme_images/mealdetail_ss.png" alt="Meal Detail View." width="200" />
+
 
 ### 4. Favourites
 A list of meals marked as favorites by the user, easily accessible from a dedicated tab.
