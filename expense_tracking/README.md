@@ -13,7 +13,7 @@ The Expense Tracking application, built with flutter, help you monitor your dail
 ## Screens
 
 ### 1. Expenses
-<img src="./assets/readme_images/expenses.png.png" alt="Expenses List and Comparison graph" width="200" />
+<img src="./assets/readme_images/expenses.png" alt="Expenses List and Comparison graph" width="200" />
 
 ### 2. Add New Expense
 <img src="./assets/readme_images/new_expense.png" alt="Add new expense" width="200" />
