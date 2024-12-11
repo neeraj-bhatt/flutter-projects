@@ -16,7 +16,9 @@ class GroceryListScreen extends StatefulWidget {
 }
 
 class _GroceryListScreenState extends State<GroceryListScreen> {
+  List<GroceryItem> _groceryItems = [];
   var _isLoading = true;
+  String? _errorMessage;
 
   @override
   void initState() {
@@ -24,12 +26,16 @@ class _GroceryListScreenState extends State<GroceryListScreen> {
     super.initState();
   }
 
-  List<GroceryItem> _groceryItems = [];
 
   void _loadItems() async {
     final url = Uri.https(
         'flutter-9b5f8-default-rtdb.firebaseio.com', 'shopping-list.json');
     final response = await http.get(url);
+    if(response.statusCode >= 400){
+      setState(() {
+        _errorMessage = 'Failed to fetch data. Please try again later.';
+      });
+    }
     final Map<String, dynamic> itemList =
         json.decode(response.body);
     final List<GroceryItem> tempList = [];
@@ -85,6 +91,10 @@ class _GroceryListScreenState extends State<GroceryListScreen> {
             },
             child: GroceryListItem(item: _groceryItems[index])),
       );
+    }
+
+    if(_errorMessage != null){
+      content = Center(child: Text(_errorMessage!),);
     }
 
     return Scaffold(
