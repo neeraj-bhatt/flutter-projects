@@ -1,11 +1,9 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import 'package:http/http.dart' as http;
 import 'package:shopping_list/data/categories.dart';
 import 'dart:convert';
 
-import 'package:shopping_list/data/dummy_items.dart';
 import 'package:shopping_list/models/grocery_item.dart';
 import 'package:shopping_list/screens/new_item.dart';
 import 'package:shopping_list/widgets/grocery_list_item.dart';
@@ -18,6 +16,8 @@ class GroceryListScreen extends StatefulWidget {
 }
 
 class _GroceryListScreenState extends State<GroceryListScreen> {
+  var _isLoading = true;
+
   @override
   void initState() {
     _loadItems();
@@ -47,6 +47,7 @@ class _GroceryListScreenState extends State<GroceryListScreen> {
     }
     setState(() {
       _groceryItems = tempList;
+      _isLoading = false;
     });
   }
 
@@ -69,6 +70,11 @@ class _GroceryListScreenState extends State<GroceryListScreen> {
         children: [Text("Uh Oh!!!  No Items Here"), Text("Add some new Items")],
       ),
     );
+
+    if(_isLoading){
+      content = const Center(child: CircularProgressIndicator());
+    }
+
     if (_groceryItems.isNotEmpty) {
       content = ListView.builder(
         itemCount: _groceryItems.length,
