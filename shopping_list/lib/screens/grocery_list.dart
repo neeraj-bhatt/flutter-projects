@@ -26,52 +26,64 @@ class _GroceryListScreenState extends State<GroceryListScreen> {
     super.initState();
   }
 
-
   void _loadItems() async {
     final url = Uri.https(
         'flutter-9b5f8-default-rtdb.firebaseio.com', 'shopping-list.json');
-    final response = await http.get(url);
-    if(response.statusCode >= 400){
+
+    try{
+      final response = await http.get(url);
+
+      if (response.body == 'null') {
+        setState(() {
+          _isLoading = false;
+        });
+        return;
+      }
+
+      if (response.statusCode >= 400) {
+        setState(() {
+          _errorMessage = 'Failed to fetch data. Please try again later.';
+        });
+      }
+      final Map<String, dynamic> itemList = json.decode(response.body);
+      final List<GroceryItem> tempList = [];
+      for (final item in itemList.entries) {
+        final tempCat = categories.entries
+            .firstWhere((catItem) => catItem.value.cat == item.value['category'])
+            .value;
+        tempList.add(
+          GroceryItem(
+              id: item.key,
+              name: item.value['name'],
+              quantity: item.value['quantity'],
+              category: tempCat),
+        );
+      }
       setState(() {
-        _errorMessage = 'Failed to fetch data. Please try again later.';
+        _groceryItems = tempList;
+        _isLoading = false;
       });
+    }catch (error){
+      _errorMessage = 'Something went wrong. Please try again later.';
     }
-    final Map<String, dynamic> itemList =
-        json.decode(response.body);
-    final List<GroceryItem> tempList = [];
-    for (final item in itemList.entries) {
-      final tempCat = categories.entries
-          .firstWhere((catItem) => catItem.value.cat == item.value['category'])
-          .value;
-      tempList.add(
-        GroceryItem(
-            id: item.key,
-            name: item.value['name'],
-            quantity: item.value['quantity'],
-            category: tempCat),
-      );
-    }
-    setState(() {
-      _groceryItems = tempList;
-      _isLoading = false;
-    });
   }
 
-  void _addItem() async {
-    await Navigator.of(context).push<GroceryItem>(MaterialPageRoute(
+  void _addItem() async{
+    await Navigator.of(context).push(MaterialPageRoute(
       builder: (context) => const NewItem(),
     ));
     _loadItems();
   }
 
-  void _removeItem(GroceryItem item) async{
+  void _removeItem(GroceryItem item) async {
     final index = _groceryItems.indexOf(item);
     setState(() {
       _groceryItems.remove(item);
     });
-    final url = Uri.https('flutter-9b5f8-default-rtdb.firebaseio.com', 'shopping-list/${item.id}.json');
+    final url = Uri.https('flutter-9b5f8-default-rtdb.firebaseio.com',
+        'shopping-list/${item.id}.json');
     final response = await http.delete(url);
-    if(response.statusCode != 200){
+    if (response.statusCode != 200) {   // if item is not deleted from database undo action
       setState(() {
         _groceryItems.insert(index, item);
       });
@@ -87,7 +99,7 @@ class _GroceryListScreenState extends State<GroceryListScreen> {
       ),
     );
 
-    if(_isLoading){
+    if (_isLoading) {
       content = const Center(child: CircularProgressIndicator());
     }
 
@@ -103,8 +115,10 @@ class _GroceryListScreenState extends State<GroceryListScreen> {
       );
     }
 
-    if(_errorMessage != null){
-      content = Center(child: Text(_errorMessage!),);
+    if (_errorMessage != null) {
+      content = Center(
+        child: Text(_errorMessage!),
+      );
     }
 
     return Scaffold(
