@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'package:firebase_core/firebase_core.dart';
+import 'package:shopping_list/screens/authentication/auth_screen.dart';
 
 import 'package:shopping_list/screens/grocery_list.dart';
 
@@ -12,7 +14,9 @@ final theme = ThemeData.dark().copyWith(
   scaffoldBackgroundColor: const Color.fromARGB(255, 50, 58, 60),
 );
 
-void main() {
+void main() async{
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(const MyApp());
 }
 
@@ -26,7 +30,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Flutter Groceries',
       theme: theme,
-      home: const GroceryListScreen(),
+      home: const AuthScreen(),
     );
   }
 }
