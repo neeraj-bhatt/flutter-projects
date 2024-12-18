@@ -36,6 +36,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
         );
       }
       // to home screen
+      print("Errorrrrrrrrrrrrrrrrr");
+
     } catch (e) {
       if (context.mounted){
         ScaffoldMessenger.of(context).showSnackBar(
@@ -68,7 +70,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
               height: 18.0,
             ),
             ElevatedButton(
-              onPressed: () {},
+              onPressed: _signUp,
               child: SizedBox(
                 child: Text("Sign Up"),
               ),

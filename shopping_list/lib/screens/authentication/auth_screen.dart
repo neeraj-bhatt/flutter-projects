@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'package:shopping_list/screens/authentication/log_in.dart';
 import 'package:shopping_list/screens/authentication/sign_up.dart';
 
 class AuthScreen extends StatelessWidget {
@@ -34,7 +35,13 @@ class AuthScreen extends StatelessWidget {
               height: 18,
             ),
             ElevatedButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const LogInScreen(),
+                    ));
+              },
               child: SizedBox(
                 width: MediaQuery.of(context).size.width * 0.6,
                 child: const Center(
