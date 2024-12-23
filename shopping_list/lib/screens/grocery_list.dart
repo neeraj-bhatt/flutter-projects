@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shopping_list/data/categories.dart';
 import 'dart:convert';
+import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:shopping_list/models/grocery_item.dart';
 import 'package:shopping_list/screens/new_item.dart';
@@ -27,11 +28,29 @@ class _GroceryListScreenState extends State<GroceryListScreen> {
   }
 
   void _loadItems() async {
+    final user = FirebaseAuth.instance.currentUser;
+    if(user == null){
+      setState(() {
+        _isLoading = false;
+        _errorMessage = "User not authenticated.";
+      });
+      return;
+    }
+
+    final userId = user.uid;
+    print("Current User : $userId"); // testing
     final url = Uri.https(
-        'flutter-9b5f8-default-rtdb.firebaseio.com', 'shopping-list.json');
+        'flutter-9b5f8-default-rtdb.firebaseio.com', 'shopping-list/$userId.json');
+    print(url); //testing
 
     try{
       final response = await http.get(url);
+
+      print("Response Status: ${response.statusCode}"); //testing
+      print("Response Body: ${response.body}");   //testing
+
+
+      print("Current User : $userId"); // testing
 
       if (response.body == 'null') {
         setState(() {
@@ -44,6 +63,7 @@ class _GroceryListScreenState extends State<GroceryListScreen> {
         setState(() {
           _errorMessage = 'Failed to fetch data. Please try again later.';
         });
+        return;
       }
       final Map<String, dynamic> itemList = json.decode(response.body);
       final List<GroceryItem> tempList = [];

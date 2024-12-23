@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 
 import 'package:firebase_core/firebase_core.dart';
-import 'package:shopping_list/screens/authentication/auth_screen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
+import 'package:shopping_list/screens/authentication/auth_screen.dart';
 import 'package:shopping_list/screens/grocery_list.dart';
 
 final theme = ThemeData.dark().copyWith(
@@ -30,7 +31,28 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Flutter Groceries',
       theme: theme,
-      home: const AuthScreen(),
+      home: const AuthenticationChecker(),
+    );
+  }
+}
+
+class AuthenticationChecker extends StatelessWidget{
+  const AuthenticationChecker({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return StreamBuilder<User?>(
+      stream: FirebaseAuth.instance.authStateChanges(), builder: (context, snapshot){
+        if(snapshot.connectionState == ConnectionState.waiting){
+          return const Center(child: CircularProgressIndicator(),);
+        }
+        else if(snapshot.hasData){
+          return const GroceryListScreen();
+        }
+        else{
+          return const AuthScreen();
+        }
+    },
     );
   }
 }

@@ -36,8 +36,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
         );
       }
       // to home screen
-      print("Errorrrrrrrrrrrrrrrrr");
-
     } catch (e) {
       if (context.mounted){
         ScaffoldMessenger.of(context).showSnackBar(

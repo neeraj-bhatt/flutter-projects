@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import 'package:http/http.dart' as http;
@@ -5,7 +6,6 @@ import 'dart:convert';
 
 import 'package:shopping_list/data/categories.dart';
 import 'package:shopping_list/models/category.dart';
-import 'package:shopping_list/models/grocery_item.dart';
 
 class NewItem extends StatefulWidget {
   const NewItem({super.key});
@@ -24,13 +24,24 @@ class _NewItemState extends State<NewItem> {
   var _isSending = false;
 
   void _saveItem() async {
-    if (_formKey.currentState!.validate()) {
-      _formKey.currentState!.save();
-      setState(() {
-        _isSending = true;
-      });
-      final url = Uri.https(
-          'flutter-9b5f8-default-rtdb.firebaseio.com', 'shopping-list.json');
+    if (!_formKey.currentState!.validate()) return;   //  if input field entry are not validate simply return
+
+    _formKey.currentState!.save();
+    setState(() {
+      _isSending = true;
+    });
+
+    try {
+      final user = FirebaseAuth.instance.currentUser;
+      if (user == null) {
+        _showSnackBar(message: "User not authenticated!");
+        return;
+      }
+
+      // creates user specific url
+      final userId = user.uid;
+      final url = Uri.https('flutter-9b5f8-default-rtdb.firebaseio.com',
+          'shopping-list/$userId.json');
       final response = await http.post(
         url,
         headers: {'Content-Type': 'application/json'},
@@ -41,10 +52,28 @@ class _NewItemState extends State<NewItem> {
         }),
       );
 
+      if (response.statusCode >= 400) {
+        _showSnackBar(message: "Failed to save data! Please try again.");
+        return;
+      }
+
+
       if (!context.mounted) {
         return;
       }
       Navigator.of(context).pop();
+    } catch (e) {
+      _showSnackBar(message: "An error Occured : $e");
+      return;
+    }
+  }
+
+  void _showSnackBar({required String message}){
+    setState(() {
+      _isSending = false;
+    });
+    if(context.mounted){
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(message)));
     }
   }
 
