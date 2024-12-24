@@ -29,7 +29,7 @@ class _GroceryListScreenState extends State<GroceryListScreen> {
 
   void _loadItems() async {
     final user = FirebaseAuth.instance.currentUser;
-    if(user == null){
+    if (user == null) {
       setState(() {
         _isLoading = false;
         _errorMessage = "User not authenticated.";
@@ -38,20 +38,11 @@ class _GroceryListScreenState extends State<GroceryListScreen> {
     }
 
     final userId = user.uid;
-    print("Current User : $userId"); // testing
-    final url = Uri.https(
-        'flutter-9b5f8-default-rtdb.firebaseio.com', 'shopping-list/$userId.json');
-    print(url); //testing
+    final url = Uri.https('flutter-9b5f8-default-rtdb.firebaseio.com',
+        'shopping-list/$userId.json');
 
-    try{
+    try {
       final response = await http.get(url);
-
-      print("Response Status: ${response.statusCode}"); //testing
-      print("Response Body: ${response.body}");   //testing
-
-
-      print("Current User : $userId"); // testing
-
       if (response.body == 'null') {
         setState(() {
           _isLoading = false;
@@ -69,7 +60,8 @@ class _GroceryListScreenState extends State<GroceryListScreen> {
       final List<GroceryItem> tempList = [];
       for (final item in itemList.entries) {
         final tempCat = categories.entries
-            .firstWhere((catItem) => catItem.value.cat == item.value['category'])
+            .firstWhere(
+                (catItem) => catItem.value.cat == item.value['category'])
             .value;
         tempList.add(
           GroceryItem(
@@ -83,12 +75,12 @@ class _GroceryListScreenState extends State<GroceryListScreen> {
         _groceryItems = tempList;
         _isLoading = false;
       });
-    }catch (error){
+    } catch (error) {
       _errorMessage = 'Something went wrong. Please try again later.';
     }
   }
 
-  void _addItem() async{
+  void _addItem() async {
     await Navigator.of(context).push(MaterialPageRoute(
       builder: (context) => const NewItem(),
     ));
@@ -103,11 +95,16 @@ class _GroceryListScreenState extends State<GroceryListScreen> {
     final url = Uri.https('flutter-9b5f8-default-rtdb.firebaseio.com',
         'shopping-list/${item.id}.json');
     final response = await http.delete(url);
-    if (response.statusCode != 200) {   // if item is not deleted from database undo action
+    if (response.statusCode != 200) {
+      // if item is not deleted from database undo action
       setState(() {
         _groceryItems.insert(index, item);
       });
     }
+  }
+
+  Future<void> _logOut() async {
+    await FirebaseAuth.instance.signOut();
   }
 
   @override
@@ -143,6 +140,10 @@ class _GroceryListScreenState extends State<GroceryListScreen> {
 
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+          onPressed: _logOut,
+          icon: const Icon(Icons.logout_outlined),
+        ),
         title: const Text("Your Groceries"),
         actions: [
           IconButton(

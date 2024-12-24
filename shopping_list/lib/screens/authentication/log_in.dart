@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:shopping_list/screens/grocery_list.dart';
 
 class LogInScreen extends StatefulWidget {
   const LogInScreen({super.key});
@@ -33,6 +34,7 @@ class _LogInScreenState extends State<LogInScreen> {
           const SnackBar(content: Text("Log In Successful")),
         );
       }
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const GroceryListScreen()));
     } catch (e) {
       if(context.mounted){
         ScaffoldMessenger.of(context).showSnackBar(

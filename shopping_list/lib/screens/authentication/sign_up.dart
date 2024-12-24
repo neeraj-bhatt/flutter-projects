@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:shopping_list/screens/grocery_list.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -35,7 +36,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
           const SnackBar(content: Text("SignUp Successful!")),
         );
       }
-      // to home screen
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const GroceryListScreen(),)); // to home screen
     } catch (e) {
       if (context.mounted){
         ScaffoldMessenger.of(context).showSnackBar(
