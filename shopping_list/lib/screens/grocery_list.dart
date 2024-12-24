@@ -38,8 +38,9 @@ class _GroceryListScreenState extends State<GroceryListScreen> {
     }
 
     final userId = user.uid;
+    final idToken = await user.getIdToken();
     final url = Uri.https('flutter-9b5f8-default-rtdb.firebaseio.com',
-        'shopping-list/$userId.json');
+        'shopping-list/$userId.json', {'auth' : idToken});
 
     try {
       final response = await http.get(url);

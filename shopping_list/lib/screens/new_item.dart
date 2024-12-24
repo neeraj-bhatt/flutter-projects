@@ -40,8 +40,9 @@ class _NewItemState extends State<NewItem> {
 
       // creates user specific url
       final userId = user.uid;
+      final idToken = await user.getIdToken();
       final url = Uri.https('flutter-9b5f8-default-rtdb.firebaseio.com',
-          'shopping-list/$userId.json');
+          'shopping-list/$userId.json', {'auth' : idToken});
       final response = await http.post(
         url,
         headers: {'Content-Type': 'application/json'},
