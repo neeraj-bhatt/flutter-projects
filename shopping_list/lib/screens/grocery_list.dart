@@ -20,6 +20,7 @@ class _GroceryListScreenState extends State<GroceryListScreen> {
   List<GroceryItem> _groceryItems = [];
   var _isLoading = true;
   String? _errorMessage;
+  User? user;
 
   @override
   void initState() {
@@ -28,7 +29,7 @@ class _GroceryListScreenState extends State<GroceryListScreen> {
   }
 
   void _loadItems() async {
-    final user = FirebaseAuth.instance.currentUser;
+    user = FirebaseAuth.instance.currentUser;
     if (user == null) {
       setState(() {
         _isLoading = false;
@@ -37,8 +38,8 @@ class _GroceryListScreenState extends State<GroceryListScreen> {
       return;
     }
 
-    final userId = user.uid;
-    final idToken = await user.getIdToken();
+    final userId = user!.uid;
+    final idToken = await user!.getIdToken();
     final url = Uri.https('flutter-9b5f8-default-rtdb.firebaseio.com',
         'shopping-list/$userId.json', {'auth' : idToken});
 
@@ -89,12 +90,15 @@ class _GroceryListScreenState extends State<GroceryListScreen> {
   }
 
   void _removeItem(GroceryItem item) async {
+    if(user == null) return;
+    final userId = user!.uid;
+    final idToken = await user!.getIdToken();
     final index = _groceryItems.indexOf(item);
     setState(() {
       _groceryItems.remove(item);
     });
     final url = Uri.https('flutter-9b5f8-default-rtdb.firebaseio.com',
-        'shopping-list/${item.id}.json');
+        'shopping-list/$userId/${item.id}.json', {'auth' : idToken});
     final response = await http.delete(url);
     if (response.statusCode != 200) {
       // if item is not deleted from database undo action
