@@ -4,6 +4,7 @@ import 'package:http/http.dart' as http;
 import 'package:shopping_list/data/categories.dart';
 import 'dart:convert';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:shopping_list/main.dart';
 
 import 'package:shopping_list/models/grocery_item.dart';
 import 'package:shopping_list/screens/new_item.dart';
@@ -41,7 +42,7 @@ class _GroceryListScreenState extends State<GroceryListScreen> {
     final userId = user!.uid;
     final idToken = await user!.getIdToken();
     final url = Uri.https('flutter-9b5f8-default-rtdb.firebaseio.com',
-        'shopping-list/$userId.json', {'auth' : idToken});
+        'shopping-list/$userId.json', {'auth': idToken});
 
     try {
       final response = await http.get(url);
@@ -90,7 +91,7 @@ class _GroceryListScreenState extends State<GroceryListScreen> {
   }
 
   void _removeItem(GroceryItem item) async {
-    if(user == null) return;
+    if (user == null) return;
     final userId = user!.uid;
     final idToken = await user!.getIdToken();
     final index = _groceryItems.indexOf(item);
@@ -98,7 +99,7 @@ class _GroceryListScreenState extends State<GroceryListScreen> {
       _groceryItems.remove(item);
     });
     final url = Uri.https('flutter-9b5f8-default-rtdb.firebaseio.com',
-        'shopping-list/$userId/${item.id}.json', {'auth' : idToken});
+        'shopping-list/$userId/${item.id}.json', {'auth': idToken});
     final response = await http.delete(url);
     if (response.statusCode != 200) {
       // if item is not deleted from database undo action
@@ -110,6 +111,15 @@ class _GroceryListScreenState extends State<GroceryListScreen> {
 
   Future<void> _logOut() async {
     await FirebaseAuth.instance.signOut();
+    if (context.mounted) {
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const AuthenticationChecker(),
+        ),
+        (route) => false,
+      );
+    }
   }
 
   @override
