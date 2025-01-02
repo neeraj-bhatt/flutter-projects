@@ -38,6 +38,10 @@ class PlacesList extends StatelessWidget {
               .titleMedium!
               .copyWith(color: Theme.of(context).colorScheme.onSurface),
         ),
+        leading: CircleAvatar(
+          radius: 26.0,
+          backgroundImage: FileImage(places[index].image),
+        ),
       ),
     );
   }
