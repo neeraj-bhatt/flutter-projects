@@ -4,7 +4,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:favorite_places/screens/add_place_screen.dart';
 import 'package:favorite_places/widgets/places_list.dart';
 import 'package:favorite_places/providers/user_places.dart';
-import 'package:favorite_places/models/place.dart';
 
 class PlacesListScreen extends ConsumerWidget {
   const PlacesListScreen({super.key});
@@ -29,7 +28,9 @@ class PlacesListScreen extends ConsumerWidget {
               icon: const Icon(Icons.add)),
         ],
       ),
-      body: PlacesList(places: userPlaces),
+      body: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 8.0),
+          child: PlacesList(places: userPlaces)),
     );
   }
 }
