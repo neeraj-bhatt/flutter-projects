@@ -25,7 +25,7 @@ class _AddPlaceScreenState extends ConsumerState<AddPlaceScreen> {
     if(!_formKey.currentState!.validate()) return;
     _formKey.currentState!.save();
 
-    ref.watch(userPlacesProvider.notifier).addPlace(Place(title: _title, image: _selectedImage!));
+    ref.watch(userPlacesProvider.notifier).addPlace(_title, _selectedImage!);
     Navigator.of(context).pop();
   }
 
