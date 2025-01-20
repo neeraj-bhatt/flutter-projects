@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
+final _firebase = FirebaseAuth.instance;
 
 class AuthScreen extends StatefulWidget {
   const AuthScreen({super.key});
@@ -12,14 +15,28 @@ class AuthScreen extends StatefulWidget {
 class _AuthScreenState extends State<AuthScreen> {
   var _isLogIn = true;
   final _formKey = GlobalKey<FormState>();
-  var _enteredEmail;
-  var _enteredPassword;
+  var _enteredEmail = '';
+  var _enteredPassword = '';
 
-  void _submit(){
-    if(!_formKey.currentState!.validate()) return;
+  void _submit() async {
+    if (!_formKey.currentState!.validate()) return;
     _formKey.currentState!.save();
-    print(_enteredEmail);
-    print(_enteredPassword);
+    try {
+      if (_isLogIn) {
+        // log in
+        final userCredentials = await _firebase.signInWithEmailAndPassword(
+            email: _enteredEmail, password: _enteredPassword);
+        print(userCredentials);
+      } else {
+        // sign in
+        final userCredentials = await _firebase.createUserWithEmailAndPassword(
+            email: _enteredEmail, password: _enteredPassword);
+        print(userCredentials);
+      }
+    } on FirebaseAuthException catch (error) {
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(error.message ?? 'Authentication Failed')));
+    }
   }
 
   @override
@@ -63,7 +80,7 @@ class _AuthScreenState extends State<AuthScreen> {
                               }
                               return null;
                             },
-                            onSaved: (newValue) => _enteredEmail = newValue,
+                            onSaved: (newValue) => _enteredEmail = newValue!,
                           ),
                           TextFormField(
                             decoration: InputDecoration(labelText: 'Password'),
@@ -72,14 +89,13 @@ class _AuthScreenState extends State<AuthScreen> {
                               if (value == null || value.isEmpty) {
                                 return 'Please enter a password';
                               }
-                              if (!RegExp(
-                                      r'^(?=.*\d)[A-Za-z\d]{8,}$')
+                              if (!RegExp(r'^(?=.*\d)[A-Za-z\d]{8,}$')
                                   .hasMatch(value)) {
                                 return 'Password must be at least 8 character long, include a letter and a number';
                               }
                               return null;
                             },
-                            onSaved: (newValue) => _enteredPassword = newValue,
+                            onSaved: (newValue) => _enteredPassword = newValue!,
                           ),
                           const SizedBox(height: 12),
                           ElevatedButton(
