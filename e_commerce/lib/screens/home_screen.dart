@@ -48,7 +48,14 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("E-Commerce App"),
+        title: Text(
+          "E-Commerce App",
+          style: Theme.of(context)
+              .textTheme
+              .titleLarge!
+              .copyWith(color: Theme.of(context).colorScheme.onPrimary),
+        ),
+        backgroundColor: Theme.of(context).colorScheme.primary,
       ),
       body: GridView.builder(
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(

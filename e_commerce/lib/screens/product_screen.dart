@@ -9,7 +9,9 @@ class ProductScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        backgroundColor: Theme.of(context).colorScheme.primary,
+      ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.symmetric(horizontal: 18.0, vertical: 8),
         child: Column(
@@ -17,7 +19,10 @@ class ProductScreen extends StatelessWidget {
           children: [
             Text(
               product.title,
-              style: Theme.of(context).textTheme.titleLarge,
+              style: Theme.of(context)
+                  .textTheme
+                  .titleLarge!
+                  .copyWith(color: Theme.of(context).colorScheme.primary),
             ),
             const SizedBox(height: 16.0),
             Text(
@@ -29,7 +34,10 @@ class ProductScreen extends StatelessWidget {
             ),
             Text(
               product.description,
-              style: Theme.of(context).textTheme.bodyMedium,
+              style: Theme.of(context)
+                  .textTheme
+                  .bodyMedium!
+                  .copyWith(color: Theme.of(context).colorScheme.onSecondaryContainer),
             ),
             const SizedBox(height: 22),
             Container(

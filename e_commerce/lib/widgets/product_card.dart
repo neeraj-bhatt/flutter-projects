@@ -8,7 +8,6 @@ class ProductCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      elevation: 3.0,
       child: Padding(
         padding: EdgeInsets.all(10.0),
         child: Column(
@@ -26,21 +25,29 @@ class ProductCard extends StatelessWidget {
             ),
             Text(
               product.title,
-              style: Theme.of(context).textTheme.titleMedium,
+              style: Theme.of(context)
+                  .textTheme
+                  .titleMedium!
+                  .copyWith(color: Theme.of(context).colorScheme.primary),
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
             ),
             Text(
               '\$${product.price}',
-              style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                  color: Colors.green, fontWeight: FontWeight.bold),
+              style: Theme.of(context)
+                  .textTheme
+                  .titleSmall
+                  ?.copyWith(color: Colors.green, fontWeight: FontWeight.bold),
             ),
             const SizedBox(
               height: 8.0,
             ),
             Text(
               product.description,
-              style: Theme.of(context).textTheme.bodySmall,
+              style: Theme.of(context)
+                  .textTheme
+                  .bodySmall!
+                  .copyWith(color: Theme.of(context).colorScheme.onSecondary),
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
             )
