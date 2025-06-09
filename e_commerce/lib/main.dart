@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-
-import 'package:e_commerce/screens/home_screen.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
+
+import 'package:e_commerce/screens/tab_screen.dart';
 
 final theme = ThemeData(
   colorScheme: ColorScheme.light(
@@ -22,7 +23,11 @@ final theme = ThemeData(
 );
 
 void main() {
-  runApp(const MyApp());
+  runApp(
+    ProviderScope(
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -36,7 +41,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: theme,
       themeMode: ThemeMode.system,
-      home: const HomeScreen(),
+      home: const TabScreen(),
     );
   }
 }

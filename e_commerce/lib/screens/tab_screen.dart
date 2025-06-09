@@ -1,0 +1,56 @@
+import 'package:flutter/material.dart';
+
+import 'package:e_commerce/screens/home_screen.dart';
+import 'package:e_commerce/screens/cart_screen.dart';
+
+class TabScreen extends StatefulWidget {
+  const TabScreen({super.key});
+  @override
+  State<TabScreen> createState() {
+    return _TabScreen();
+  }
+}
+
+class _TabScreen extends State<TabScreen> {
+  int _selectedPageIndex = 0;
+  void _selectPage(int index){
+    setState(() {
+      _selectedPageIndex = index;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    Widget activePage = HomeScreen();
+    String title = "E-Commerce App";
+    if(_selectedPageIndex == 1){
+      activePage = CartScreen();
+      title = "Cart";
+    }
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          title,
+          style: Theme.of(context)
+              .textTheme
+              .titleLarge!
+              .copyWith(color: Theme.of(context).colorScheme.onPrimary),
+        ),
+        backgroundColor: Theme.of(context).colorScheme.primary,
+      ),
+      body: activePage,
+      bottomNavigationBar: BottomNavigationBar(
+          backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
+          currentIndex: _selectedPageIndex,
+          onTap: _selectPage,
+          items: [
+            BottomNavigationBarItem(
+                icon: Icon(Icons.home_filled), label: 'Home'),
+            BottomNavigationBarItem(
+                icon: Icon(Icons.shopping_cart_rounded), label: 'Cart'),
+            BottomNavigationBarItem(
+                icon: Icon(Icons.favorite), label: 'Wishlist')
+          ]),
+    );
+  }
+}

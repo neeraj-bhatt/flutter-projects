@@ -1,4 +1,3 @@
-import 'package:e_commerce/widgets/product_card.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -6,6 +5,7 @@ import 'dart:convert';
 import 'package:e_commerce/models/product.dart';
 import 'package:e_commerce/models/products_data.dart';
 import 'package:e_commerce/screens/product_screen.dart';
+import 'package:e_commerce/widgets/product_card.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -46,18 +46,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          "E-Commerce App",
-          style: Theme.of(context)
-              .textTheme
-              .titleLarge!
-              .copyWith(color: Theme.of(context).colorScheme.onPrimary),
-        ),
-        backgroundColor: Theme.of(context).colorScheme.primary,
-      ),
-      body: GridView.builder(
+    return GridView.builder(
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 2,
           childAspectRatio: 0.8,
@@ -69,7 +58,7 @@ class _HomeScreenState extends State<HomeScreen> {
             onTap: () => _navigateToProductDetail(context, productList[index]),
             borderRadius: BorderRadius.circular(12),
             child: ProductCard(product: productList[index])),
-      ),
+      );
       // FutureBuilder<List<Product>>(
       //   future: futureProducts,
       //   builder: (context, snapshot) {
@@ -95,6 +84,5 @@ class _HomeScreenState extends State<HomeScreen> {
       //     );
       //   },
       // ),
-    );
   }
 }

@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:e_commerce/models/product.dart';
+import 'package:e_commerce/providers/cart_items.dart';
 
-class ProductScreen extends StatelessWidget {
+class ProductScreen extends ConsumerWidget {
   final Product product;
   const ProductScreen({super.key, required this.product});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final cartNotifier = ref.watch(cartItemsProvider.notifier);
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.primary,
@@ -34,10 +38,8 @@ class ProductScreen extends StatelessWidget {
             ),
             Text(
               product.description,
-              style: Theme.of(context)
-                  .textTheme
-                  .bodyMedium!
-                  .copyWith(color: Theme.of(context).colorScheme.onSecondaryContainer),
+              style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                  color: Theme.of(context).colorScheme.onSecondaryContainer),
             ),
             const SizedBox(height: 22),
             Container(
@@ -51,7 +53,10 @@ class ProductScreen extends StatelessWidget {
             ),
             const SizedBox(height: 22),
             ElevatedButton(
-              onPressed: () {},
+              onPressed: () {
+                cartNotifier.addProduct(product);
+                print('----------------Success---------------');
+              },
               style: ElevatedButton.styleFrom(
                 padding: const EdgeInsets.all(8.0),
                 backgroundColor: Colors.yellow,
