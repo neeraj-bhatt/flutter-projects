@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:e_commerce/providers/cart_items.dart';
+import 'package:e_commerce/widgets/cart_product.dart';
 
 class CartScreen extends ConsumerStatefulWidget {
   const CartScreen({super.key});
@@ -27,7 +28,8 @@ class _CartScreenState extends ConsumerState<CartScreen> {
     }
     return ListView.builder(
       itemCount: cartItems.length,
-      itemBuilder: (ctx, index) => Text(cartItems[index].product.title),
+      itemBuilder: (ctx, index) =>
+          CartProduct(item: cartItems[index]),
     );
   }
 }

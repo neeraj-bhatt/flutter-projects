@@ -55,7 +55,21 @@ class ProductScreen extends ConsumerWidget {
             ElevatedButton(
               onPressed: () {
                 cartNotifier.addProduct(product);
-                print('----------------Success---------------');
+                ScaffoldMessenger.of(context).clearSnackBars();
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(
+                      "Item added to cart successfully",
+                      style: Theme.of(context).textTheme.titleMedium!.copyWith(
+                          color: Theme.of(context).colorScheme.onSecondary),
+                    ),
+                    margin: EdgeInsets.only(left: 6.0, right: 6.0,bottom: 18.0),
+                    padding: const EdgeInsets.all(16),
+                    backgroundColor: Colors.blueGrey.shade200,
+                    behavior: SnackBarBehavior.floating,
+                    duration: Duration(seconds: 1),
+                  ),
+                );
               },
               style: ElevatedButton.styleFrom(
                 padding: const EdgeInsets.all(8.0),

@@ -7,11 +7,11 @@ class TabScreen extends StatefulWidget {
   const TabScreen({super.key});
   @override
   State<TabScreen> createState() {
-    return _TabScreen();
+    return _TabScreenState();
   }
 }
 
-class _TabScreen extends State<TabScreen> {
+class _TabScreenState extends State<TabScreen> {
   int _selectedPageIndex = 0;
   void _selectPage(int index){
     setState(() {

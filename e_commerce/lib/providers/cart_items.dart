@@ -9,17 +9,26 @@ class CartItemsNotifier extends StateNotifier<List<CartItem>> {
     int index = state.indexWhere((p) => p.product.id == product.id);
     if (index >= 0) {
       state = [
-        ...state.sublist(0, index),
         state[index].copyWith(quantity: state[index].quantity + 1),
+        ...state.sublist(0, index),
         ...state.sublist(index + 1)
       ];
     } else {
-      state = [CartItem(product: product, quantity: 1)];
+      state = [CartItem(product: product, quantity: 1), ...state];
     }
   }
 
   void removeProduct(Product product) {
-    state = state.where((p) => p.product.id != product.id).toList();
+    int index = state.indexWhere((p) => p.product.id == product.id);
+    if (index >= 0 && state[index].quantity > 1) {
+      state = [
+        ...state.sublist(0, index),
+        state[index].copyWith(quantity: state[index].quantity - 1),
+        ...state.sublist(index + 1)
+      ];
+    } else {
+      state = state.where((p) => p.product.id != product.id).toList();
+    }
   }
 }
 
