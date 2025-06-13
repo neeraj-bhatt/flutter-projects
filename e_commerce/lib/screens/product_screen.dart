@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:e_commerce/models/product.dart';
-import 'package:e_commerce/providers/cart_items.dart';
+import 'package:e_commerce/providers/cart_items_provider.dart';
+import 'package:e_commerce/providers/favorites_provider.dart';
 
 class ProductScreen extends ConsumerWidget {
   final Product product;
@@ -10,11 +11,48 @@ class ProductScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final cartNotifier = ref.watch(cartItemsProvider.notifier);
+    final wishlistItems = ref.watch(favoriteItemsProvider);
+    final markedFavorite = wishlistItems.contains(product);
 
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.primary,
+        actions: [
+          Padding(
+            padding: const EdgeInsets.only(right: 16),
+            child: IconButton(
+              onPressed: () {
+                final isAdded = ref
+                    .watch(favoriteItemsProvider.notifier)
+                    .toggleWishlistItem(product);
+                ScaffoldMessenger.of(context).clearSnackBars();
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(
+                        isAdded ? 'Item added to Wishlist' : 'Item removed',
+                        style: Theme.of(context)
+                            .textTheme
+                            .titleMedium!
+                            .copyWith(
+                                color:
+                                    Theme.of(context).colorScheme.onSecondary)),
+                    margin:
+                        EdgeInsets.only(left: 6.0, right: 6.0, bottom: 18.0),
+                    padding: const EdgeInsets.all(16),
+                    backgroundColor: Colors.blueGrey.shade200,
+                    behavior: SnackBarBehavior.floating,
+                    duration: Duration(seconds: 1),
+                  ),
+                );
+              },
+              icon: Icon(Icons.favorite),
+              color: markedFavorite
+                  ? Theme.of(context).colorScheme.secondary
+                  : Colors.white,
+              iconSize: markedFavorite ? 34 : 28,
+            ),
+          )
+        ],
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.symmetric(horizontal: 18.0, vertical: 8),
@@ -54,7 +92,7 @@ class ProductScreen extends ConsumerWidget {
             const SizedBox(height: 22),
             ElevatedButton(
               onPressed: () {
-                cartNotifier.addProduct(product);
+                ref.watch(cartItemsProvider.notifier).addProduct(product);
                 ScaffoldMessenger.of(context).clearSnackBars();
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
@@ -63,7 +101,8 @@ class ProductScreen extends ConsumerWidget {
                       style: Theme.of(context).textTheme.titleMedium!.copyWith(
                           color: Theme.of(context).colorScheme.onSecondary),
                     ),
-                    margin: EdgeInsets.only(left: 6.0, right: 6.0,bottom: 18.0),
+                    margin:
+                        EdgeInsets.only(left: 6.0, right: 6.0, bottom: 18.0),
                     padding: const EdgeInsets.all(16),
                     backgroundColor: Colors.blueGrey.shade200,
                     behavior: SnackBarBehavior.floating,

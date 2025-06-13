@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:e_commerce/screens/home_screen.dart';
 import 'package:e_commerce/screens/cart_screen.dart';
+import 'package:e_commerce/screens/wishlist_screen.dart';
 
 class TabScreen extends StatefulWidget {
   const TabScreen({super.key});
@@ -26,6 +27,10 @@ class _TabScreenState extends State<TabScreen> {
     if(_selectedPageIndex == 1){
       activePage = CartScreen();
       title = "Cart";
+    }
+    if(_selectedPageIndex == 2){
+      activePage = WishlistScreen();
+      title = "Wishlist";
     }
     return Scaffold(
       appBar: AppBar(
