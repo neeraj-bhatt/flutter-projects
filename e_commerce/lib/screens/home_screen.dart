@@ -4,8 +4,7 @@ import 'dart:convert';
 
 import 'package:e_commerce/models/product.dart';
 import 'package:e_commerce/models/products_data.dart';
-import 'package:e_commerce/screens/product_screen.dart';
-import 'package:e_commerce/widgets/product_card.dart';
+import 'package:e_commerce/widgets/products_grid.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -38,51 +37,33 @@ class _HomeScreenState extends State<HomeScreen> {
     return products;
   }
 
-  void _navigateToProductDetail(BuildContext context, Product product) {
-    Navigator.of(context).push(MaterialPageRoute(
-      builder: (context) => ProductScreen(product: product),
-    ));
-  }
-
   @override
   Widget build(BuildContext context) {
-    return GridView.builder(
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
-          childAspectRatio: 0.8,
-          crossAxisSpacing: 8.0,
-          mainAxisSpacing: 8.0,
-        ),
-        itemCount: productList.length,
-        itemBuilder: (context, index) => InkWell(
-            onTap: () => _navigateToProductDetail(context, productList[index]),
-            borderRadius: BorderRadius.circular(12),
-            child: ProductCard(product: productList[index])),
-      );
-      // FutureBuilder<List<Product>>(
-      //   future: futureProducts,
-      //   builder: (context, snapshot) {
-      //     if (snapshot.connectionState == ConnectionState.waiting) {
-      //       return Center(child: const CircularProgressIndicator());
-      //     }
-      //     if (snapshot.hasError) {
-      //       return Center(
-      //         child: Text('Error : ${snapshot.error}'),
-      //       );
-      //     }
-      //     final products = snapshot.data!;
-      //     return GridView.builder(
-      //       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-      //         crossAxisCount: 2,
-      //         childAspectRatio: 0.7,
-      //         crossAxisSpacing: 8.0,
-      //         mainAxisSpacing: 8.0,
-      //       ),
-      //       itemCount: products.length,
-      //       itemBuilder: (context, index) =>
-      //           ProductCard(product: products[index]),
-      //     );
-      //   },
-      // ),
+    return ProductsGrid(productList: productList);
+    // FutureBuilder<List<Product>>(
+    //   future: futureProducts,
+    //   builder: (context, snapshot) {
+    //     if (snapshot.connectionState == ConnectionState.waiting) {
+    //       return Center(child: const CircularProgressIndicator());
+    //     }
+    //     if (snapshot.hasError) {
+    //       return Center(
+    //         child: Text('Error : ${snapshot.error}'),
+    //       );
+    //     }
+    //     final products = snapshot.data!;
+    //     return GridView.builder(
+    //       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+    //         crossAxisCount: 2,
+    //         childAspectRatio: 0.7,
+    //         crossAxisSpacing: 8.0,
+    //         mainAxisSpacing: 8.0,
+    //       ),
+    //       itemCount: products.length,
+    //       itemBuilder: (context, index) =>
+    //           ProductCard(product: products[index]),
+    //     );
+    //   },
+    // ),
   }
 }
