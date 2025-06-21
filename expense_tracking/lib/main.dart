@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+
 import 'package:expense_tracking/widgets/expenses.dart';
+import 'package:expense_tracking/models/expense_model.dart';
+
 
 var kColorScheme = ColorScheme.fromSeed(
   seedColor: const Color.fromARGB(255, 18, 95, 227),
@@ -10,7 +14,18 @@ var kDarkColorScheme = ColorScheme.fromSeed(
   seedColor: const Color.fromARGB(255, 5, 99, 125),
 );
 
-void main() {
+void main() async{
+  WidgetsFlutterBinding.ensureInitialized();
+
+  // initialize Hive
+  await Hive.initFlutter();
+
+  // register Hive
+  Hive.registerAdapter(ExpenseAdapter());
+  Hive.registerAdapter(CategoryAdapter());
+
+  await Hive.openBox<Expense>('expenses_box');
+
   runApp(MaterialApp(
     debugShowCheckedModeBanner: false,
     darkTheme: ThemeData.dark().copyWith(

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
 
-import 'package:expense_tracking/models/expense_data_model.dart';
+import 'package:expense_tracking/models/expense_model.dart';
 import 'package:expense_tracking/widgets/expenses_list/expenses_list.dart';
 import 'package:expense_tracking/widgets/new_expenses.dart';
 import 'package:expense_tracking/widgets/chart/chart.dart';
@@ -15,20 +16,7 @@ class Expenses extends StatefulWidget {
 }
 
 class _ExpensesState extends State<Expenses> {
-  final List<Expense> _registeredExpenses = [
-    Expense(
-      title: "Flutter Course",
-      amount: 19.99,
-      date: DateTime.now(),
-      category: Category.work,
-    ),
-    Expense(
-      title: "Cinema",
-      amount: 10.00,
-      date: DateTime.now(),
-      category: Category.leisure,
-    )
-  ];
+  final expenseBox = Hive.box<Expense>('expenses_box');
 
   void _openAddExpenseOverlay() {
     showModalBottomSheet(
@@ -39,49 +27,57 @@ class _ExpensesState extends State<Expenses> {
   }
 
   void _addExpense(Expense newExpense) {
-    setState(() {
-      _registeredExpenses.add(newExpense);
-    });
+    debugPrint('Adding expense: ${newExpense.title}');
+    expenseBox.add(newExpense);
+    debugPrint('Box now contains: ${expenseBox.values.map((e) => e.title).toList()}');
   }
 
-  void _removeExpense(Expense expense) {
-    final expenseIndex = _registeredExpenses.indexOf(expense);
+  // helper to find Hive key to expense Id
+  dynamic _findExpenseKey(Expense expense) {
+    return expenseBox.toMap().keys.firstWhere(
+        (key) => expenseBox.get(key)?.id == expense.id,
+        orElse: () => null);
+  }
 
-    setState(() {
-      _registeredExpenses.remove(expense);
-    });
-    ScaffoldMessenger.of(context)
-        .clearSnackBars(); //clears the old SnackBars before new one comes up
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        duration: const Duration(seconds: 3),
-        content: const Text("Expense Deleted"),
-        action: SnackBarAction(
-            label: "Undo",
-            onPressed: () {
-              setState(() {
-                _registeredExpenses.insert(expenseIndex, expense);
-              });
-            }),
-      ),
-    );
+  void _removeExpense(Expense expense) async {
+    final expenseKey = _findExpenseKey(expense);
+
+    if (expenseKey != null) {
+      // store expense copy before deletion
+      final deletedExpense = expenseBox.get(expenseKey);
+
+      // delete from hive
+      await expenseBox.delete(expenseKey);
+
+      ScaffoldMessenger.of(context)
+          .clearSnackBars(); //clears the old SnackBars before new one comes up
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          duration: const Duration(seconds: 3),
+          content: const Text("Expense Deleted"),
+          action: SnackBarAction(
+              label: "Undo",
+              onPressed: () async {
+                if (deletedExpense != null) {
+                  await expenseBox.put(expenseKey, deletedExpense);
+                }
+              }),
+        ),
+      );
+    }
   }
 
   @override
   Widget build(context) {
-    final width = MediaQuery.of(context).size.width;
-    final height = MediaQuery.of(context).size.height;
+    final expenses = expenseBox.values.toList();
+    bool isPortrait =
+        MediaQuery.of(context).size.width < MediaQuery.of(context).size.height;
 
-    Widget mainContent = const Center(
-      child: Text("No Expense Found, Try to Add some"),
-    );
-
-    if (_registeredExpenses.isNotEmpty) {
-      mainContent = ExpensesList(
-        expenses: _registeredExpenses,
-        onRemoveExpense: _removeExpense,
-      );
-    }
+    Widget mainContent = expenses.isEmpty
+        ? const Center(child: Text("No Expense Found, Try to Add some"))
+        : ExpensesList(
+            onRemoveExpense: _removeExpense,
+          );
 
     return Scaffold(
       appBar: AppBar(
@@ -93,10 +89,10 @@ class _ExpensesState extends State<Expenses> {
           ),
         ],
       ),
-      body: width < height
+      body: isPortrait
           ? Column(
               children: [
-                Expanded(child: Chart(expenses: _registeredExpenses)),
+                Expanded(child: Chart(expenses: expenses)),
                 Expanded(
                   child: mainContent,
                 ),
@@ -104,7 +100,7 @@ class _ExpensesState extends State<Expenses> {
             )
           : Row(
               children: [
-                Expanded(child: Chart(expenses: _registeredExpenses)),
+                Expanded(child: Chart(expenses: expenses)),
                 Expanded(
                   child: mainContent,
                 ),

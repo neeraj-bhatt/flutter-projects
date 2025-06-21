@@ -1,12 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
 import 'package:intl/intl.dart';
+import 'package:hive/hive.dart';
+
+part 'expense_model.g.dart';
 
 const uuid = Uuid();
 
 final formatter = DateFormat.yMd();
 
-enum Category { travel, food, leisure, work }
+@HiveType(typeId: 1)
+enum Category {
+  @HiveField(0)
+  travel,
+  @HiveField(1)
+  food,
+  @HiveField(2)
+  leisure,
+  @HiveField(3)
+  work
+}
 
 const categoryIcons = {
   Category.travel: Icons.flight_takeoff,
@@ -15,11 +28,17 @@ const categoryIcons = {
   Category.work: Icons.work
 };
 
+@HiveType(typeId: 0)
 class Expense {
+  @HiveField(0)
   final String id;
+  @HiveField(1)
   final String title;
+  @HiveField(2)
   final double amount;
+  @HiveField(3)
   final DateTime date;
+  @HiveField(4)
   final Category category;
 
   Expense({
@@ -44,13 +63,12 @@ class ExpenseBucket {
   final Category category;
   final List<Expense> expenses;
 
-  double get totalExpense{
+  double get totalExpense {
     double sum = 0;
 
-    for(final expense in expenses){
+    for (final expense in expenses) {
       sum += expense.amount;
     }
     return sum;
   }
-
 }
