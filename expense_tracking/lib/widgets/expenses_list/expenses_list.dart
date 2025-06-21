@@ -17,7 +17,6 @@ class ExpensesList extends StatelessWidget {
     return ValueListenableBuilder(
       valueListenable: Hive.box<Expense>('expenses_box').listenable(),
       builder: (context, box, _){
-        debugPrint('ValueListenableBuilder rebuilt!');
         final expenses = box.values.toList();
         return ListView.builder(
           itemCount: expenses.length,

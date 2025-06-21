@@ -27,9 +27,7 @@ class _ExpensesState extends State<Expenses> {
   }
 
   void _addExpense(Expense newExpense) {
-    debugPrint('Adding expense: ${newExpense.title}');
     expenseBox.add(newExpense);
-    debugPrint('Box now contains: ${expenseBox.values.map((e) => e.title).toList()}');
   }
 
   // helper to find Hive key to expense Id
