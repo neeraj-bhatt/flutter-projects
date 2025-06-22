@@ -119,7 +119,7 @@ class _AddExpenseState extends State<AddExpense> {
                       onChanged: _saveAmountInput,
                       keyboardType: TextInputType.number,
                       decoration: const InputDecoration(
-                        prefixText: "\$ ",
+                        prefixText: "\u20B9 ",
                         label: Text("Amount"),
                       ),
                     ),

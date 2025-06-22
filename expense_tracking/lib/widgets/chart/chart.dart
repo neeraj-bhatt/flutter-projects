@@ -15,12 +15,6 @@ class Chart extends StatelessWidget {
       arr.add(ExpenseBucket.ofCategory(expenses, cat));
     }
     return arr;
-    //   HardCoded [
-    //   ExpenseBucket.ofCategory(expenses, Category.work),
-    //   ExpenseBucket.ofCategory(expenses, Category.leisure),
-    //   ExpenseBucket.ofCategory(expenses, Category.food),
-    //   ExpenseBucket.ofCategory(expenses, Category.travel),
-    // ]
   }
 
   double get total {
@@ -42,8 +36,8 @@ class Chart extends StatelessWidget {
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10.0),
           color: isDark
-              ? kDarkColorScheme.secondary
-              : kColorScheme.primary.withOpacity(0.50),
+              ? kDarkColorScheme.secondary.withValues(alpha: 0.50)
+              : kColorScheme.primary.withValues(alpha: 0.50),
         ),
         child: Column(
           children: [

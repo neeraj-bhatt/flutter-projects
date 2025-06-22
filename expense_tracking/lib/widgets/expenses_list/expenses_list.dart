@@ -8,31 +8,27 @@ class ExpensesList extends StatelessWidget {
   const ExpensesList({
     super.key,
     required this.onRemoveExpense,
+    required this.expenses,
   });
 
   final void Function(Expense expense) onRemoveExpense;
+  final List<Expense> expenses;
 
   @override
   Widget build(context) {
-    return ValueListenableBuilder(
-      valueListenable: Hive.box<Expense>('expenses_box').listenable(),
-      builder: (context, box, _){
-        final expenses = box.values.toList();
-        return ListView.builder(
-          itemCount: expenses.length,
-          itemBuilder: (cxt, index) => Dismissible(
-            background: Container(
-              color: Theme.of(context).colorScheme.error.withValues(alpha: 0.75),
-              margin: Theme.of(context).cardTheme.margin,
-            ),
-            onDismissed: (direction) => onRemoveExpense(expenses[index]),
-            key: ValueKey(expenses[index].id),
-            child: ExpensesItem(
-              expenses[index],
-            ),
-          ),
-        );
-      },
+    return ListView.builder(
+      itemCount: expenses.length,
+      itemBuilder: (cxt, index) => Dismissible(
+        background: Container(
+          color: Theme.of(context).colorScheme.error.withValues(alpha: 0.75),
+          margin: Theme.of(context).cardTheme.margin,
+        ),
+        onDismissed: (direction) => onRemoveExpense(expenses[index]),
+        key: ValueKey(expenses[index].id),
+        child: ExpensesItem(
+          expenses[index],
+        ),
+      ),
     );
   }
 }

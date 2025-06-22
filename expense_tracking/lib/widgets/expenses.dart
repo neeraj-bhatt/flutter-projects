@@ -5,6 +5,7 @@ import 'package:expense_tracking/models/expense_model.dart';
 import 'package:expense_tracking/widgets/expenses_list/expenses_list.dart';
 import 'package:expense_tracking/widgets/new_expenses.dart';
 import 'package:expense_tracking/widgets/chart/chart.dart';
+import 'package:hive_flutter/adapters.dart';
 
 class Expenses extends StatefulWidget {
   const Expenses({super.key});
@@ -17,6 +18,12 @@ class Expenses extends StatefulWidget {
 
 class _ExpensesState extends State<Expenses> {
   final expenseBox = Hive.box<Expense>('expenses_box');
+
+  @override
+  void dispose(){
+    Hive.box('expenses_box').close();
+    super.dispose();
+  }
 
   void _openAddExpenseOverlay() {
     showModalBottomSheet(
@@ -67,15 +74,8 @@ class _ExpensesState extends State<Expenses> {
 
   @override
   Widget build(context) {
-    final expenses = expenseBox.values.toList();
     bool isPortrait =
         MediaQuery.of(context).size.width < MediaQuery.of(context).size.height;
-
-    Widget mainContent = expenses.isEmpty
-        ? const Center(child: Text("No Expense Found, Try to Add some"))
-        : ExpensesList(
-            onRemoveExpense: _removeExpense,
-          );
 
     return Scaffold(
       appBar: AppBar(
@@ -87,23 +87,34 @@ class _ExpensesState extends State<Expenses> {
           ),
         ],
       ),
-      body: isPortrait
-          ? Column(
-              children: [
-                Expanded(child: Chart(expenses: expenses)),
-                Expanded(
-                  child: mainContent,
-                ),
-              ],
-            )
-          : Row(
-              children: [
-                Expanded(child: Chart(expenses: expenses)),
-                Expanded(
-                  child: mainContent,
-                ),
-              ],
-            ),
+      body: ValueListenableBuilder(
+        valueListenable: expenseBox.listenable(),
+        builder: (context, box, _) {
+          List<Expense> expenses = expenseBox.values.toList();
+          Widget mainContent = expenses.isEmpty
+              ? const Center(child: Text("No Expense Found, Try to Add some"))
+              : ExpensesList(
+                  onRemoveExpense: _removeExpense, expenses: expenses);
+          expenses = box.values.toList();
+          return isPortrait
+              ? Column(
+                  children: [
+                    Expanded(child: Chart(expenses: expenses)),
+                    Expanded(
+                      child: mainContent,
+                    ),
+                  ],
+                )
+              : Row(
+                  children: [
+                    Expanded(child: Chart(expenses: expenses)),
+                    Expanded(
+                      child: mainContent,
+                    ),
+                  ],
+                );
+        },
+      ),
     );
   }
 }
