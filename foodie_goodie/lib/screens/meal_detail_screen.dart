@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 import 'package:foodie_goodie/models/meal.dart';
 import 'package:foodie_goodie/provider/favorite_provider.dart';
@@ -40,11 +41,13 @@ class MealDetailScreen extends ConsumerWidget {
           children: [
             Hero(
               tag: meal.id,
-              child: Image(
-                image: NetworkImage(meal.imageUrl),
+              child: CachedNetworkImage(
+                imageUrl: meal.imageUrl,
                 height: 200,
                 width: double.infinity,
                 fit: BoxFit.cover,
+                placeholder: (context, url) => const CircularProgressIndicator(),
+                errorWidget: (context, url, error) => const Icon(Icons.error),
               ),
             ),
             const SizedBox(height: 24),

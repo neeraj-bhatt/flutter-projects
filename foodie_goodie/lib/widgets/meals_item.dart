@@ -1,7 +1,7 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 import 'package:foodie_goodie/models/meal.dart';
-import 'package:transparent_image/transparent_image.dart';
 import 'package:foodie_goodie/widgets/meal_item_trait.dart';
 
 class MealsItem extends StatelessWidget {
@@ -33,12 +33,15 @@ class MealsItem extends StatelessWidget {
           children: [
             Hero(
               tag: meal.id,
-              child: FadeInImage(
-                placeholder: MemoryImage(kTransparentImage),
-                image: NetworkImage(meal.imageUrl),
-                fit: BoxFit.cover,
+              child: CachedNetworkImage(
+                imageUrl: meal.imageUrl,
                 height: 200,
                 width: double.infinity,
+                fit: BoxFit.cover,
+                fadeInDuration: const Duration(microseconds: 300),
+                placeholderFadeInDuration: const Duration(microseconds: 100),
+                placeholder: (context, url) => Container(color: Colors.black12,),
+                errorWidget: (context, url, error) => const Icon(Icons.error),
               ),
             ),
             Positioned(
