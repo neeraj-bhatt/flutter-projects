@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 import 'package:e_commerce/models/cart_item.dart';
 import 'package:e_commerce/providers/cart_items_provider.dart';
@@ -17,8 +18,8 @@ class CartProduct extends ConsumerWidget {
         padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
         child: Row(
           children: [
-            Image.network(
-              item.product.image,
+            CachedNetworkImage(
+              imageUrl: item.product.image,
               height: 100,
               width: 100,
             ),
@@ -43,7 +44,8 @@ class CartProduct extends ConsumerWidget {
                         'Price : ${item.product.price.toStringAsFixed(2)}',
                       ),
                       const Spacer(),
-                      Text('Total : ${(item.product.price * item.quantity).toStringAsFixed(2)}'),
+                      Text(
+                          'Total : ${(item.product.price * item.quantity).toStringAsFixed(2)}'),
                     ],
                   ),
                   const SizedBox(height: 8.0),

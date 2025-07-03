@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 import 'package:e_commerce/models/product.dart';
 
@@ -15,9 +16,12 @@ class ProductCard extends StatelessWidget {
           children: [
             AspectRatio(
               aspectRatio: 16 / 9,
-              child: Image.network(
-                product.image,
+              child: CachedNetworkImage(
+                imageUrl: product.image,
                 fit: BoxFit.contain,
+                placeholder: (ctx, url) => Container(color: Colors.black12),
+                placeholderFadeInDuration: const Duration(milliseconds: 100),
+                errorWidget: (ctx, url, error) => const Icon(Icons.error),
               ),
             ),
             const SizedBox(

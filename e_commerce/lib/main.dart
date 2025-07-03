@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import 'package:e_commerce/screens/tab_screen.dart';
+import 'package:e_commerce/screens/authentication_screen.dart';
 
 final theme = ThemeData(
   colorScheme: ColorScheme.light(
@@ -41,7 +41,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: theme,
       themeMode: ThemeMode.system,
-      home: const TabScreen(),
+      home: const AuthenticationScreen(),
     );
   }
 }
