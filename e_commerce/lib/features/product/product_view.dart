@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:e_commerce/models/product.dart';
-import 'package:e_commerce/providers/cart_items_provider.dart';
-import 'package:e_commerce/providers/favorites_provider.dart';
+import 'package:e_commerce/features/product/product_view_model.dart';
 
 class ProductScreen extends ConsumerWidget {
   final Product product;
@@ -11,8 +10,8 @@ class ProductScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final wishlistItems = ref.watch(favoriteItemsProvider);
-    final markedFavorite = wishlistItems.contains(product);
+    final vm = ref.watch(productViewModelProvider);
+    final markedFavorite = vm.isFavorite(product);
 
     return Scaffold(
       appBar: AppBar(
@@ -22,9 +21,7 @@ class ProductScreen extends ConsumerWidget {
             padding: const EdgeInsets.only(right: 16),
             child: IconButton(
               onPressed: () {
-                final isAdded = ref
-                    .watch(favoriteItemsProvider.notifier)
-                    .toggleWishlistItem(product);
+                final isAdded = vm.toggleFavorite(product);
                 ScaffoldMessenger.of(context).clearSnackBars();
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
@@ -92,7 +89,7 @@ class ProductScreen extends ConsumerWidget {
             const SizedBox(height: 22),
             ElevatedButton(
               onPressed: () {
-                ref.watch(cartItemsProvider.notifier).addProduct(product);
+                vm.addToCart(product);
                 ScaffoldMessenger.of(context).clearSnackBars();
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(

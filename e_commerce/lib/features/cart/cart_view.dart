@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'package:e_commerce/providers/cart_items_provider.dart';
-import 'package:e_commerce/widgets/cart_product.dart';
+import 'package:e_commerce/features/cart/viewmodel/cart_items_provider.dart';
+import 'package:e_commerce/features/cart/widgets/cart_product.dart';
 
 class CartScreen extends ConsumerStatefulWidget {
   const CartScreen({super.key});

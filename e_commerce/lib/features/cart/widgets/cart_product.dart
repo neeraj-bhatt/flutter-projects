@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
-import 'package:e_commerce/models/cart_item.dart';
-import 'package:e_commerce/providers/cart_items_provider.dart';
+import 'package:e_commerce/features/cart/model/cart_item.dart';
+import 'package:e_commerce/features/cart/viewmodel/cart_view_model.dart';
 
 class CartProduct extends ConsumerWidget {
   final CartItem item;
@@ -11,7 +11,7 @@ class CartProduct extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final cartItemNotifier = ref.watch(cartItemsProvider.notifier);
+    final vm = ref.read(cartViewModelProvider);
     return Card(
       margin: EdgeInsets.symmetric(horizontal: 8.0, vertical: 6.0),
       child: Padding(
@@ -53,7 +53,7 @@ class CartProduct extends ConsumerWidget {
                     children: [
                       IconButton(
                         onPressed: () {
-                          cartItemNotifier.removeProduct(item.product);
+                          vm.removeFromCart(item.product);
                         },
                         style: IconButton.styleFrom(
                           shape: RoundedRectangleBorder(
@@ -73,7 +73,7 @@ class CartProduct extends ConsumerWidget {
                       const SizedBox(width: 8.0),
                       IconButton(
                           onPressed: () {
-                            cartItemNotifier.addProduct(item.product);
+                            vm.addToCart(item.product);
                           },
                           style: IconButton.styleFrom(
                             shape: RoundedRectangleBorder(

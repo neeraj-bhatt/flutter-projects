@@ -1,7 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:e_commerce/models/product.dart';
-import 'package:e_commerce/models/cart_item.dart';
+import 'package:e_commerce/features/cart/model/cart_item.dart';
 
 class CartItemsNotifier extends StateNotifier<List<CartItem>> {
   CartItemsNotifier() : super([]);

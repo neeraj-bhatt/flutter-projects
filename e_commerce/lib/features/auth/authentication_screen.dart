@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:e_commerce/screens/tab_screen.dart';
+import 'package:e_commerce/features/tab/tab_screen.dart';
 import 'package:e_commerce/widgets/custom_form_field.dart';
 import 'package:e_commerce/widgets/custom_button.dart';
 import 'package:e_commerce/utils/form_validators.dart';

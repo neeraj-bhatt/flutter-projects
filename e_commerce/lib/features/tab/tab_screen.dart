@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-import 'package:e_commerce/screens/home_screen.dart';
-import 'package:e_commerce/screens/cart_screen.dart';
-import 'package:e_commerce/screens/wishlist_screen.dart';
+import 'package:e_commerce/features/home/home_view.dart';
+import 'package:e_commerce/features/cart/cart_view.dart';
+import 'package:e_commerce/features/wishlist/wishlist_screen.dart';
 
 class TabScreen extends StatefulWidget {
   const TabScreen({super.key});
