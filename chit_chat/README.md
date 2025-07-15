@@ -17,7 +17,7 @@ A simple group chatting application built using **Flutter** and **Firebase**, wh
 
 ## 🖼️ Screenshots
 
-> *(Add some screenshots here later to show off the UI)*
+> *(Add some screenshots here late)*
 
 ---
 
