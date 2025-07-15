@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+
+import 'package:chit_chat/widgets/user_image_picker.dart';
 
 final _firebase = FirebaseAuth.instance;
 
@@ -17,11 +21,17 @@ class _AuthScreenState extends State<AuthScreen> {
   final _formKey = GlobalKey<FormState>();
   var _enteredEmail = '';
   var _enteredPassword = '';
+  var _enteredUsername = '';
+  File? _selectedImage;
+  var _isAuthenticating = false;
 
   void _submit() async {
     if (!_formKey.currentState!.validate()) return;
     _formKey.currentState!.save();
     try {
+      setState(() {
+        _isAuthenticating = true;
+      });
       if (_isLogIn) {
         // log in
         final userCredentials = await _firebase.signInWithEmailAndPassword(
@@ -30,10 +40,20 @@ class _AuthScreenState extends State<AuthScreen> {
         // sign in
         final userCredentials = await _firebase.createUserWithEmailAndPassword(
             email: _enteredEmail, password: _enteredPassword);
+        await FirebaseFirestore.instance
+            .collection('users')
+            .doc(userCredentials.user!.uid)
+            .set({
+          'userName': _enteredUsername,
+          'email': _enteredEmail,
+        });
       }
     } on FirebaseAuthException catch (error) {
       ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text(error.message ?? 'Authentication Failed')));
+      setState(() {
+        _isAuthenticating = false;
+      });
     }
   }
 
@@ -62,6 +82,12 @@ class _AuthScreenState extends State<AuthScreen> {
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
+                          if (!_isLogIn)
+                            UserImagePicker(
+                              onPickedImage: (pickedImage) {
+                                _selectedImage = pickedImage;
+                              },
+                            ),
                           TextFormField(
                             decoration: InputDecoration(labelText: 'Email'),
                             keyboardType: TextInputType.emailAddress,
@@ -80,6 +106,21 @@ class _AuthScreenState extends State<AuthScreen> {
                             },
                             onSaved: (newValue) => _enteredEmail = newValue!,
                           ),
+                          if (!_isLogIn)
+                            TextFormField(
+                              decoration:
+                                  InputDecoration(labelText: 'Username'),
+                              validator: (value) {
+                                if (value == null ||
+                                    value.isEmpty ||
+                                    value.trim().length < 4) {
+                                  return 'Enter at least 4 character';
+                                }
+                                return null;
+                              },
+                              onSaved: (newValue) =>
+                                  _enteredUsername = newValue!,
+                            ),
                           TextFormField(
                             decoration: InputDecoration(labelText: 'Password'),
                             obscureText: true,
@@ -96,25 +137,28 @@ class _AuthScreenState extends State<AuthScreen> {
                             onSaved: (newValue) => _enteredPassword = newValue!,
                           ),
                           const SizedBox(height: 12),
-                          ElevatedButton(
-                            onPressed: () {
-                              _submit();
-                            },
-                            style: ElevatedButton.styleFrom(
-                                backgroundColor: Theme.of(context)
-                                    .colorScheme
-                                    .primaryContainer),
-                            child: Text(_isLogIn ? 'Log in' : 'Sign Up'),
-                          ),
-                          TextButton(
+                          if (_isAuthenticating) CircularProgressIndicator(),
+                          if (!_isAuthenticating)
+                            ElevatedButton(
                               onPressed: () {
-                                setState(() {
-                                  _isLogIn = !_isLogIn;
-                                });
+                                _submit();
                               },
-                              child: Text(_isLogIn
-                                  ? 'Create new Account'
-                                  : 'Already have an Account?'))
+                              style: ElevatedButton.styleFrom(
+                                  backgroundColor: Theme.of(context)
+                                      .colorScheme
+                                      .primaryContainer),
+                              child: Text(_isLogIn ? 'Log in' : 'Sign Up'),
+                            ),
+                          if (!_isAuthenticating)
+                            TextButton(
+                                onPressed: () {
+                                  setState(() {
+                                    _isLogIn = !_isLogIn;
+                                  });
+                                },
+                                child: Text(_isLogIn
+                                    ? 'Create new Account'
+                                    : 'Already have an Account?'))
                         ],
                       ),
                     ),
