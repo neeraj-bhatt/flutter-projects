@@ -30,30 +30,15 @@ To run this project locally, follow these steps:
 
 1. **Clone the Repository**:
    ```bash
-   git clone https://github.com/your-username/foodie_goodie.git
+   git clone https://github.com/neeraj-bhatt/foodie_goodie.git
    
 2. **Install Dependencies** - Navigate to the project directory and run the following command to install the required dependencies:
+   ```bash
    flutter pub get
 
 3. **Run the App**:
+   ```bash
    flutter run
 
 ## Dependencies
-- [Flutter](https://flutter.dev/) - A UI toolkit for building natively compiled applications for mobile, web, and desktop from a single codebase.
-- Other dependencies will be managed automatically via `pubspec.yaml`.
-
-## Project Structure
--lib/main.dart: The entry point of the application.
--lib/screens/: Contains the different screen components (Meals, Favorites, etc.).
--lib/widgets/: Contains the custom widgets used across the app.
-
-## How to Contribute
-If you'd like to contribute to this project:
--Fork the repository.
--Create a new branch (git checkout -b feature-branch).
--Commit your changes (git commit -m 'Add new feature').
--Push to the branch (git push origin feature-branch).
--Open a Pull Request.
-
-## License
-This project is licensed under the MIT License.
+- dependencies will be managed automatically via `pubspec.yaml`.
