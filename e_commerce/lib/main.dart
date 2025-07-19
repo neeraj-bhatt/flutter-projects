@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 
-import 'package:e_commerce/features/auth/authentication_screen.dart';
+import 'package:e_commerce/features/auth/auth_view/auth_wapper.dart';
 
 final theme = ThemeData(
   colorScheme: ColorScheme.light(
@@ -22,7 +24,9 @@ final theme = ThemeData(
   ),
 );
 
-void main() {
+void main() async{
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   runApp(
     ProviderScope(
       child: const MyApp(),
@@ -41,7 +45,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: theme,
       themeMode: ThemeMode.system,
-      home: const AuthenticationScreen(),
+      home: const AuthWrapper(),
     );
   }
 }

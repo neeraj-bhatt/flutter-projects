@@ -14,7 +14,7 @@ class TabScreen extends StatefulWidget {
 
 class _TabScreenState extends State<TabScreen> {
   int _selectedPageIndex = 0;
-  void _selectPage(int index){
+  void _selectPage(int index) {
     setState(() {
       _selectedPageIndex = index;
     });
@@ -24,11 +24,11 @@ class _TabScreenState extends State<TabScreen> {
   Widget build(BuildContext context) {
     Widget activePage = HomeScreen();
     String title = "E-Commerce App";
-    if(_selectedPageIndex == 1){
+    if (_selectedPageIndex == 1) {
       activePage = CartScreen();
       title = "Cart";
     }
-    if(_selectedPageIndex == 2){
+    if (_selectedPageIndex == 2) {
       activePage = WishlistScreen();
       title = "Wishlist";
     }
@@ -43,7 +43,7 @@ class _TabScreenState extends State<TabScreen> {
         ),
         backgroundColor: Theme.of(context).colorScheme.primary,
       ),
-      body: activePage,
+      body: SafeArea(child: activePage),
       bottomNavigationBar: BottomNavigationBar(
           backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
           iconSize: 28.0,

@@ -9,7 +9,7 @@ class CustomFormField extends StatefulWidget {
   final String? prefixText;
   final TextInputType? keyboardType;
   final String? Function(String? value)? validator;
-  final String? Function(String? value)? onSaved;
+  final void Function(String? value)? onSaved;
   const CustomFormField(
       {super.key,
       required this.labelText,
