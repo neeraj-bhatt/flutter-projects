@@ -21,6 +21,7 @@ final theme = ThemeData(
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(12.0),
     ),
+    color: Colors.grey[100],
   ),
 );
 

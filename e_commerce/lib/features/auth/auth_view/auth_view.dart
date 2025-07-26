@@ -10,6 +10,8 @@ class AuthScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final formKey = GlobalKey<FormState>();
+
     final viewModel = ref.watch(authViewModelProvider);
     final vm = ref.read(authViewModelProvider.notifier);
 
@@ -20,7 +22,7 @@ class AuthScreen extends ConsumerWidget {
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Form(
-            key: viewModel.formKey,
+            key: formKey,
             child: SingleChildScrollView(
               child: Column(
                   mainAxisSize: MainAxisSize.min,
@@ -91,7 +93,10 @@ class AuthScreen extends ConsumerWidget {
                       child: CustomButton(
                         text: viewModel.isLogin ? 'LogIn' : 'SignUp',
                         onPressed: () {
-                          vm.validateAndSave();
+                          final isValid = formKey.currentState!.validate();
+                          if(!isValid) return;
+                          formKey.currentState!.save();
+                          vm.save();
                         },
                       ),
                     ),

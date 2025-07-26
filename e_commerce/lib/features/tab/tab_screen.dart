@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:e_commerce/features/home/home_view.dart';
 import 'package:e_commerce/features/cart/cart_view.dart';
 import 'package:e_commerce/features/wishlist/wishlist_screen.dart';
+import 'package:e_commerce/features/profile/view/profile_view.dart';
 
 class TabScreen extends StatefulWidget {
   const TabScreen({super.key});
@@ -41,6 +42,20 @@ class _TabScreenState extends State<TabScreen> {
               .titleLarge!
               .copyWith(color: Theme.of(context).colorScheme.onPrimary),
         ),
+        actions: [
+          IconButton(
+            onPressed: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (ctx) => ProfileView(),
+                  ));
+            },
+            icon: Icon(Icons.account_circle),
+            iconSize: 30,
+            color: Colors.white,
+          )
+        ],
         backgroundColor: Theme.of(context).colorScheme.primary,
       ),
       body: SafeArea(child: activePage),

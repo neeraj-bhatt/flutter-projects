@@ -9,12 +9,13 @@ class AuthService{
       return userCredential;
     }on FirebaseAuthException catch (e){
       if(e.code == 'user-not-found'){
-        print('No user found for that email.');
+        throw FirebaseAuthException(code: 'No user found for that email.');
       }else if(e.code == 'wrong-password'){
-        print('Wrong Password provided for that user.');
+        throw FirebaseAuthException(code: 'Wrong Password provided for that user.');
+      }else{
+        throw FirebaseAuthException(code: 'Login failed : ${e.code}');
       }
     }
-    return null;
   }
   
   Future<UserCredential?> signUp(String email, String password) async{
@@ -23,13 +24,12 @@ class AuthService{
       return userCredential;
     }on FirebaseAuthException catch (e){
       if(e.code == 'weak-password'){
-        print('The password provided is too weak');
+        throw FirebaseAuthException(code: 'The password provided is too weak');
       }else if(e.code == 'email-already-in-use'){
-        print('The account already exist for that email.');
+        throw FirebaseAuthException(code: 'The account already exist for that email.');
+      }else{
+        throw FirebaseAuthException(code: 'SignUp failed : ${e.code}');
       }
-    }catch (e){
-      print(e);
     }
-    return null;
   }
 }

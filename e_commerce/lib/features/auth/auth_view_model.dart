@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:e_commerce/features/auth/auth_service.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 
 class AuthViewModel extends ChangeNotifier {
-  final formKey = GlobalKey<FormState>();
-
   bool isLogin = true;
   String firstName = '';
   String lastName = '';
@@ -40,10 +37,7 @@ class AuthViewModel extends ChangeNotifier {
     }
   }
 
-  void validateAndSave() {
-    final isValid = formKey.currentState!.validate();
-    if(!isValid) return;
-    formKey.currentState!.save();
+  void save() {
     final authService = AuthService();
     if(isLogin){
       authService.logIn(email, password);
