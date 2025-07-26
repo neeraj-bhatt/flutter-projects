@@ -21,16 +21,20 @@ A fully functional **e-commerce application** built with **Flutter**, designed t
 
 ## Screenshots
 
-- Authentication (Login/SignUp)
+### Authentication (Login/SignUp)
   <img src="./assets/readme_img/login.png" alt="Login Screen." width="200" />
   <img src="./assets/readme_img/signup.png" alt="SignUp Screen." width="200" />
-- Home
+
+### Home
   <img src="./assets/readme_img/home.png" alt="Home Screen." width="200" />
-- Cart
+
+### Cart
   <img src="./assets/readme_img/emptycart.png" alt="Empty Cart Screen." width="200" />
-- Wishlist
+
+### Wishlist
   <img src="./assets/readme_img/emptywishlist.png" alt="Empty Wishlist Screen." width="200" />
-- Profile
+
+### Profile
   <img src="./assets/readme_img/profile.png" alt="Profile Screen." width="200" />
 
 ---
