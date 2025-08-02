@@ -1,21 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'package:e_commerce/features/cart/viewmodel/cart_items_provider.dart';
-import 'package:e_commerce/features/cart/widgets/cart_product.dart';
+import 'package:e_commerce/features/cart/view/cart_product.dart';
+import 'package:e_commerce/features/cart/viewmodel/cart_view_model_provider.dart';
 
-class CartScreen extends ConsumerStatefulWidget {
+class CartScreen extends ConsumerWidget {
   const CartScreen({super.key});
-  @override
-  ConsumerState<CartScreen> createState() {
-    return _CartScreenState();
-  }
-}
 
-class _CartScreenState extends ConsumerState<CartScreen> {
   @override
-  Widget build(BuildContext context) {
-    final cartItems = ref.watch(cartItemsProvider);
+  Widget build(BuildContext context, WidgetRef ref) {
+    final cartItems = ref.watch(cartViewModelProvider);
 
     if (cartItems.isEmpty) {
       return Center(

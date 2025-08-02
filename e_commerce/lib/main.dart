@@ -3,8 +3,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:hive/hive.dart';
 
 import 'package:e_commerce/features/auth/auth_view/auth_wapper.dart';
+import 'package:e_commerce/features/cart/model/hive_cart_item.dart';
+import 'package:e_commerce/features/cart/viewmodel/cart_view_model_provider.dart';
 
 final theme = ThemeData(
   colorScheme: ColorScheme.light(
@@ -25,11 +29,19 @@ final theme = ThemeData(
   ),
 );
 
-void main() async{
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+
+  final appDocDir = await getApplicationDocumentsDirectory();
+  Hive.init(appDocDir.path);
+  Hive.registerAdapter(HiveCartItemAdapter());
+
+  final cartBox = await Hive.openBox<HiveCartItem>('cartBox');
+
   runApp(
     ProviderScope(
+      overrides: [cartBoxProvider.overrideWithValue(cartBox)],
       child: const MyApp(),
     ),
   );
