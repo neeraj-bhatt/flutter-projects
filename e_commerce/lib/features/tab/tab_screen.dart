@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:e_commerce/features/home/home_view.dart';
-import 'package:e_commerce/features/cart/cart_view.dart';
+import 'package:e_commerce/features/cart/view/cart_view.dart';
 import 'package:e_commerce/features/wishlist/wishlist_screen.dart';
 import 'package:e_commerce/features/profile/view/profile_view.dart';
 
@@ -58,20 +58,23 @@ class _TabScreenState extends State<TabScreen> {
         ],
         backgroundColor: Theme.of(context).colorScheme.primary,
       ),
-      body: SafeArea(child: activePage),
-      bottomNavigationBar: BottomNavigationBar(
-          backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
-          iconSize: 28.0,
-          currentIndex: _selectedPageIndex,
-          onTap: _selectPage,
-          items: [
-            BottomNavigationBarItem(
-                icon: Icon(Icons.home_filled), label: 'Home'),
-            BottomNavigationBarItem(
-                icon: Icon(Icons.shopping_cart_rounded), label: 'Cart'),
-            BottomNavigationBarItem(
-                icon: Icon(Icons.favorite), label: 'Wishlist')
-          ]),
+      body: activePage,
+      bottomNavigationBar: SafeArea(
+        bottom: true,
+        child: BottomNavigationBar(
+            backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
+            iconSize: 28.0,
+            currentIndex: _selectedPageIndex,
+            onTap: _selectPage,
+            items: [
+              BottomNavigationBarItem(
+                  icon: Icon(Icons.home_filled), label: 'Home'),
+              BottomNavigationBarItem(
+                  icon: Icon(Icons.shopping_cart_rounded), label: 'Cart'),
+              BottomNavigationBarItem(
+                  icon: Icon(Icons.favorite), label: 'Wishlist')
+            ]),
+      ),
     );
   }
 }

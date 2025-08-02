@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'package:e_commerce/providers/favorites_provider.dart';
+import 'package:e_commerce/features/wishlist/favorites_provider.dart';
 import 'package:e_commerce/features/wishlist/widgets/products_grid.dart';
 
 class WishlistScreen extends ConsumerWidget {

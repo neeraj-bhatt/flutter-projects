@@ -1,8 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:e_commerce/models/product.dart';
-import 'package:e_commerce/features/cart/viewmodel/cart_items_provider.dart';
-import 'package:e_commerce/providers/favorites_provider.dart';
+import 'package:e_commerce/features/wishlist/favorites_provider.dart';
+import 'package:e_commerce/features/cart/viewmodel/cart_view_model_provider.dart';
 
 class ProductViewModel {
   final Ref ref;
@@ -17,7 +17,7 @@ class ProductViewModel {
   }
 
   void addToCart(Product product){
-    ref.read(cartItemsProvider.notifier).addProduct(product);
+    ref.read(cartViewModelProvider.notifier).addProduct(product);
   }
 }
 
